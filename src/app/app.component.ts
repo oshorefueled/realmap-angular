@@ -21,22 +21,22 @@ export class AppComponent implements OnInit{
   lineCoordinates = [];
 
   ngOnInit() {
-
+    //map subscribes to channel on component initialization
     this.subscribe();
+    //map is launched with default coordinates
     this.launchMap(this.lat, this.long);
-
   }
 
 
   subscribe(){
     var echo = new Echo({
       broadcaster: 'pusher',
-      key: '6749a93a7af07c5a00bd'
+      key: 'YOUR-KEY-HERE'
     });
     echo.channel('location')
       .listen('SendLocation', (e)=>{
          this.data = e.location;
-          console.log(this.data);
+          //map is updated on coordinate change
           this.updateMap(this.data);
       });
   }
@@ -63,7 +63,7 @@ export class AppComponent implements OnInit{
 
     this.lineCoordinates.push(new google.maps.LatLng(this.lat, this.long));
 
-    var lineCoordinatesPath = new google.maps.Polyline({
+    new google.maps.Polyline({
       path: this.lineCoordinates,
       geodesic: true,
       map: this.map,
